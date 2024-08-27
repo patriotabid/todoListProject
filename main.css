@@ -11,7 +11,7 @@ body {
 
 .container {
   margin-top: 100px;
-  min-width: 500px;
+  width: 500px;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -41,9 +41,17 @@ body {
 
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .todo-item--title {
   display: flex;
-  gap: 7px;
+  align-items: center;
+  gap: 10px;
+}
+
+.title--text {
+  /* width: 400px; */
+  width: 110vh;
+  overflow-wrap: break-word;
 }
