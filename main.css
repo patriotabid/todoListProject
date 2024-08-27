@@ -1,0 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  margin-top: 100px;
+  min-width: 500px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.container--form {
+  border: none;
+}
+
+.todo-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.container--list {
+  list-style: none;
+}
+
+.todo-item {
+  margin-bottom: 10px;
+  border: 1px solid black;
+  padding: 7px;
+  border-radius: 5px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo-item--title {
+  display: flex;
+  gap: 7px;
+}
