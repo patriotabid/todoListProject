@@ -7,6 +7,33 @@
 body {
   display: flex;
   justify-content: center;
+  background-color: #f2f2f2;
+  font-family: "Josefin Sans";
+}
+
+.btn,
+.container--taskbar,
+.todo-item,
+.todo-input {
+  border: 1px solid rgba(0, 0, 0, 0.518);
+  background-color: #fff;
+  padding: 7px;
+  border-radius: 5px;
+  font-family: inherit;
+}
+
+.btn {
+  border: none;
+  font-weight: 800;
+  color: #9495a5;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.btn:hover {
+  color: #2a2a2f;
+}
+.btn:active {
+  color: #9495a5;
 }
 
 .container {
@@ -25,8 +52,7 @@ body {
 .todo-input {
   width: 100%;
   padding: 12px;
-  border-radius: 5px;
-  border: 1px solid black;
+  font-size: 1rem;
 }
 
 .container--list {
@@ -35,9 +61,6 @@ body {
 
 .todo-item {
   margin-bottom: 10px;
-  border: 1px solid black;
-  padding: 7px;
-  border-radius: 5px;
 
   display: flex;
   justify-content: space-between;
@@ -54,4 +77,17 @@ body {
   /* width: 400px; */
   width: 110vh;
   overflow-wrap: break-word;
+}
+
+.container--taskbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 15px;
+}
+
+.list-count {
+  font-family: inherit;
+  color: #9495a5;
+  font-size: 0.8rem;
 }
