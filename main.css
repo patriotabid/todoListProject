@@ -54,8 +54,11 @@ body {
   padding: 12px;
   font-size: 1rem;
 }
+.todo-input:focus {
+  outline: none;
+}
 
-.container--list {
+.container--todo-list {
   list-style: none;
 }
 
@@ -73,6 +76,15 @@ body {
   gap: 10px;
 }
 
+.title--checkbox {
+  height: 20px;
+  opacity: 0;
+}
+
+.display--checkbox {
+  opacity: 100;
+}
+
 .title--text {
   /* width: 400px; */
   width: 110vh;
@@ -84,10 +96,31 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-left: 15px;
+  user-select: none;
 }
 
-.list-count {
+.list-count,
+.list-count-text {
   font-family: inherit;
   color: #9495a5;
   font-size: 0.8rem;
+}
+
+.taskbar--list-delete {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-delete--all:active,
+.list-delete--completed:active {
+  color: #3a7cfd;
+}
+
+.activited {
+  color: #3a7cfd;
+}
+
+.clickedItem {
+  text-decoration: line-through;
+  color: #9495a5;
 }

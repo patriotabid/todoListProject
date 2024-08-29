@@ -22,14 +22,17 @@ const update = function (data) {
 
   data.forEach(function (todo, i) {
     const todoItemStr = `
-    <li class="todo-item">
-    <div class="todo-item--title">
-    <span class="title--check-icon"><i>icon</i></span>
-    <p class="title--text ${todo.clicked ? "clickedItem" : ""}" id="${i}">
-    ${todo.title}</p>
-    </div>
+    <li class="todo-item" id="${i}">
+      <div class="todo-item--title">
+         <img class="title--checkbox ${
+           todo.clicked ? "display--checkbox" : ""
+         }" 
+            src="img/icons8-checkmark-32.png"/>
+         <p class="title--text ${todo.clicked ? "clickedItem" : ""}">
+            ${todo.title}</p>
+      </div>
     
-    <div class="todo-item--icon"></div>
+       <div class="todo-item--icon"></div>
     </li>
     `;
     todoListEl.insertAdjacentHTML("afterbegin", todoItemStr);
@@ -40,6 +43,8 @@ const update = function (data) {
 };
 
 const addActivedClass = function (clsname) {
+  if (!document.querySelector(`.${clsname}`)) return;
+
   document.querySelector(".list-display--all").classList.remove("activited");
   document.querySelector(".list-display--active").classList.remove("activited");
   document
@@ -77,52 +82,45 @@ formEl.addEventListener("submit", function (e) {
   inputEl.value = "";
 });
 
-// TASKBAR BUTTONS
-containerTaskbarEl.addEventListener("click", function (e) {
-  let newList;
-  if (e.target.classList.value.includes("list-display--all"))
-    newList = dataList;
-
-  if (e.target.classList.value.includes("list-display--active"))
-    newList = dataList.filter((todo) => !todo.clicked);
-
-  if (e.target.classList.value.includes("list-display--completed"))
-    newList = dataList.filter((todo) => todo.clicked);
-
-  if (e.target.classList.value.includes("list-delete")) {
-    newList = dataList = [];
-    localStorage.removeItem("data");
-    window.location.reload();
-  } else {
-    return;
-  }
-
-  addActivedClass(e.target.classList.value.slice(4));
-  update(newList);
-});
-
+// TODO LIST COMPLETE ITEM
 todoListEl.addEventListener("click", function (e) {
-  if (e.target.closest(".todo-item")) {
-    const todoItemIndex = Number(e.target.id);
-    dataList[todoItemIndex].clicked = !dataList[todoItemIndex].clicked;
+  const todoItem = e.target.closest(".todo-item");
+
+  if (todoItem) {
+    const index = Number(todoItem.id);
+    dataList[index].clicked = !dataList[index].clicked;
 
     update(dataList);
-
     //   Local storage
     localStorage.setItem("data", JSON.stringify(dataList));
   }
 });
 
-// Things to do:
-/*
-   1. create taskbar for todo list data
-   2. add remove function for remove items from data and local storage
-   3. find icon for check todo item
-   4. fix input border
-   5. add dark mode and send to local storage active mode
-   6. find header picture for container
+// TASKBAR BUTTONS
+containerTaskbarEl.addEventListener("click", function (e) {
+  let newList = dataList;
 
- */
+  if (e.target.closest(".list-display--all")) newList = dataList;
 
-// console.log("btn list-display--all activited".slice(4, -10));
-// console.log("btn list-display--completed activited".slice(4, -10));
+  if (e.target.closest(".list-display--active"))
+    newList = dataList.filter((todo) => !todo.clicked);
+
+  if (e.target.closest(".list-display--completed"))
+    newList = dataList.filter((todo) => todo.clicked);
+
+  if (e.target.closest(".list-delete--completed")) {
+    newList = dataList.filter((todo) => !todo.clicked);
+    dataList = newList;
+    window.location.reload();
+    localStorage.setItem("data", JSON.stringify(dataList));
+  }
+
+  if (e.target.closest(".list-delete--all")) {
+    newList = dataList = [];
+    localStorage.removeItem("data");
+    window.location.reload();
+  }
+
+  addActivedClass(e.target.classList.value.slice(4));
+  update(newList);
+});

@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToDo list</title>
     <link rel="stylesheet" href="main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
@@ -12,21 +18,23 @@
         <input type="text" class="todo-input" placeholder="Create new task" />
       </form>
 
-      <ul class="container--list todo-list"></ul>
+      <ul class="container--todo-list"></ul>
 
       <div class="container--taskbar">
         <div class="taskbar--list-count">
-          <span class="list-count">0</span>
+          <span class="list-count"></span>
+          <span class="list-count-text">items left</span>
         </div>
 
         <div class="taskbar--list-display">
-          <button class="list-display--all">All</button>
-          <button class="list-display--active">Active</button>
-          <button class="list-display--complete">Complete</button>
+          <button class="btn list-display--all">All</button>
+          <button class="btn list-display--active">Active</button>
+          <button class="btn list-display--completed">Complete</button>
         </div>
 
         <div class="taskbar--list-delete">
-          <button class="list-delete">Clear</button>
+          <button class="btn list-delete--all">Clear all</button>
+          <button class="btn list-delete--completed">Clear completed</button>
         </div>
       </div>
     </div>
