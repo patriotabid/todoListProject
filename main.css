@@ -109,6 +109,7 @@ body {
 .taskbar--list-delete {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .list-delete--all:active,
@@ -116,8 +117,17 @@ body {
   color: #3a7cfd;
 }
 
+.list-delete--all {
+  border: 1px solid red;
+}
+.list-delete--completed {
+  border: 1px solid rgb(0, 158, 0);
+}
+
 .activited {
   color: #3a7cfd;
+  text-decoration: underline #3a7cfd;
+  text-underline-offset: 2px;
 }
 
 .clickedItem {
