@@ -41,7 +41,6 @@ header {
   cursor: pointer;
 }
 .btn:hover {
-  /* color: #2a2a2f; */
   color: #3a7cfd;
 }
 .btn:active {

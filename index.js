@@ -1,5 +1,4 @@
 "use strict";
-
 // Elements variable:
 const formEl = document.querySelector(".container--form");
 const inputEl = document.querySelector(".todo-input");
@@ -92,12 +91,14 @@ formEl.addEventListener("submit", function (e) {
 todoListEl.addEventListener("click", function (e) {
   const todoItemEl = e.target.closest(".todo-item");
 
+  // Find clicked todo item
   if (todoItemEl) {
     const clickedTodoItem = dataList.find(
       (todo) => todo.id === Number(todoItemEl.id)
     );
     clickedTodoItem.clicked = !clickedTodoItem.clicked;
 
+    // Update todo list
     update(dataList);
     addActivedClass("list-display--all");
 
@@ -145,9 +146,3 @@ containerTaskbarEl.addEventListener("click", function (e) {
     window.location.reload();
   }
 });
-
-// Things to do:
-/*
-   6. find header picture for container
-
- */
