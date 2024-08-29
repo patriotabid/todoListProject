@@ -6,9 +6,20 @@
 
 body {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   background-color: #f2f2f2;
   font-family: "Josefin Sans";
+}
+
+header {
+  width: 100%;
+}
+.header-img {
+  height: 200px;
+  width: 100%;
+  z-index: -1;
 }
 
 .btn,
@@ -26,23 +37,35 @@ body {
   border: none;
   font-weight: 800;
   color: #9495a5;
-  transition: all 0.3s;
+  transition: all 0.4s;
   cursor: pointer;
 }
 .btn:hover {
-  color: #2a2a2f;
+  /* color: #2a2a2f; */
+  color: #3a7cfd;
 }
 .btn:active {
   color: #9495a5;
 }
 
 .container {
-  margin-top: 100px;
+  margin-top: -85px;
   width: 500px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   gap: 20px;
+  z-index: 1;
+}
+
+.container--logo {
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 40px;
+  letter-spacing: 1.5rem;
+  color: #ffffff;
+  user-select: none;
+  cursor: pointer;
 }
 
 .container--form {
@@ -52,6 +75,7 @@ body {
 .todo-input {
   width: 100%;
   padding: 12px;
+  padding-left: 35px;
   font-size: 1rem;
 }
 .todo-input:focus {
@@ -86,7 +110,6 @@ body {
 }
 
 .title--text {
-  /* width: 400px; */
   width: 110vh;
   overflow-wrap: break-word;
 }
