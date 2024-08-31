@@ -4,7 +4,6 @@ const formEl = document.querySelector(".container--form");
 const inputEl = document.querySelector(".todo-input");
 const todoListEl = document.querySelector(".container--todo-list");
 const listCountEl = document.querySelector(".list-count");
-const containerTaskbarEl = document.querySelector(".container--taskbar");
 const taskbarBtnsEl = document.querySelectorAll(".taskbar--btn");
 
 // VARIABLE: ............................................................................................................
@@ -21,11 +20,9 @@ const displayListCount = (data) => (listCountEl.textContent = data.length);
 const addActivedClass = function (clsname) {
   if (!document.querySelector(`.${clsname}`)) return;
 
-  document.querySelector(".list-display--all").classList.remove("activited");
-  document.querySelector(".list-display--active").classList.remove("activited");
-  document
-    .querySelector(".list-display--completed")
-    .classList.remove("activited");
+  taskbarBtnsEl.forEach((taskbarBtnEl) =>
+    taskbarBtnEl.classList.remove("activited")
+  );
 
   document.querySelector(`.${clsname}`).classList.add("activited");
 };
