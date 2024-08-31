@@ -5,6 +5,7 @@ const inputEl = document.querySelector(".todo-input");
 const todoListEl = document.querySelector(".container--todo-list");
 const listCountEl = document.querySelector(".list-count");
 const containerTaskbarEl = document.querySelector(".container--taskbar");
+const taskbarBtnsEl = document.querySelectorAll(".taskbar--btn");
 
 // VARIABLE: ............................................................................................................
 let todoItemId,
@@ -108,41 +109,32 @@ todoListEl.addEventListener("click", function (e) {
 });
 
 // TASKBAR BUTTONS
-containerTaskbarEl.addEventListener("click", function (e) {
-  let newList;
-  let acticeClass = e.target.classList.value.slice(4);
+taskbarBtnsEl.forEach(function (taskbarBtnEl) {
+  taskbarBtnEl.addEventListener("click", function (e) {
+    let newList;
+    let activeClass = e.target.classList.value.slice(17);
 
-  if (e.target.closest(".list-display--all")) {
-    newList = dataList;
-    addActivedClass(acticeClass);
-    update(newList);
-  }
-  if (e.target.closest(".list-display--active")) {
-    newList = dataList.filter((todo) => !todo.clicked);
-    addActivedClass(acticeClass);
-    update(newList);
-  }
+    if (e.target.closest(".list-display--all")) newList = dataList;
+    if (e.target.closest(".list-display--active"))
+      newList = dataList.filter((todo) => !todo.clicked);
 
-  if (e.target.closest(".list-display--completed")) {
-    newList = dataList.filter((todo) => todo.clicked);
-    addActivedClass(acticeClass);
-    update(newList);
-  }
+    if (e.target.closest(".list-display--completed"))
+      newList = dataList.filter((todo) => todo.clicked);
 
-  if (e.target.closest(".list-delete--completed")) {
-    newList = dataList.filter((todo) => !todo.clicked);
-    dataList = newList;
-    addActivedClass(acticeClass);
-    update(newList);
-    window.location.reload();
-    localStorage.setItem("data", JSON.stringify(dataList));
-  }
+    if (e.target.closest(".list-delete--completed")) {
+      newList = dataList.filter((todo) => !todo.clicked);
+      dataList = newList;
+      window.location.reload();
+      localStorage.setItem("data", JSON.stringify(dataList));
+    }
 
-  if (e.target.closest(".list-delete--all")) {
-    newList = dataList = [];
-    addActivedClass(acticeClass);
+    if (e.target.closest(".list-delete--all")) {
+      newList = dataList = [];
+      localStorage.removeItem("data");
+      window.location.reload();
+    }
+
+    addActivedClass(activeClass);
     update(newList);
-    localStorage.removeItem("data");
-    window.location.reload();
-  }
+  });
 });
