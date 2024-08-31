@@ -77,20 +77,35 @@ body {
 
 .container--todo-list {
   list-style: none;
+  width: 100%; /*  sil*/
 }
 
 .todo-item {
   margin-bottom: 10px;
+  width: 100%;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 
 .todo-item--title {
+  width: 90%;
+
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.todo-item--delete {
+  display: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.todo-item:hover .todo-item--delete {
+  display: block;
 }
 
 .title--checkbox {
@@ -103,7 +118,7 @@ body {
 }
 
 .title--text {
-  width: 110vh;
+  width: 100%;
   overflow-wrap: break-word;
 }
 
@@ -148,5 +163,8 @@ body {
 
 .clickedItem {
   text-decoration: line-through;
+  color: #9495a5;
+}
+.completedItem {
   color: #9495a5;
 }

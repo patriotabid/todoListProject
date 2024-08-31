@@ -34,16 +34,14 @@ const update = function (data) {
     const todoItemStr = `
     <li class="todo-item" id="${todo.id}">
       <div class="todo-item--title">
-         <img class="title--checkbox ${
-           todo.clicked ? "display--checkbox" : ""
-         }" 
+         <img class="title--checkbox ${todo.clicked && "display--checkbox"}" 
             src="img/icons8-checkmark-32.png"/>
-         <p class="title--text ${todo.clicked ? "clickedItem" : ""}">${
+         <p class="title--text ${todo.clicked && "clickedItem"}">${
       todo.title
     }</p>
       </div>
     
-       <div class="todo-item--icon"></div>
+       <div class="todo-item--delete ${todo.clicked && "completedItem"}">X</div>
     </li>
     `;
     todoListEl.insertAdjacentHTML("afterbegin", todoItemStr);
@@ -95,14 +93,17 @@ todoListEl.addEventListener("click", function (e) {
       (todo) => todo.id === Number(todoItemEl.id)
     );
     clickedTodoItem.clicked = !clickedTodoItem.clicked;
-
-    // Update todo list
-    update(dataList);
-    addActivedClass("list-display--all");
-
-    //   Local storage
-    localStorage.setItem("data", JSON.stringify(dataList));
   }
+
+  // Find removed todo item
+  if (e.target.closest(".todo-item--delete")) {
+    dataList = dataList.filter((todo) => todo.id !== Number(todoItemEl.id));
+  }
+
+  // Update todo list
+  update(dataList);
+  addActivedClass("list-display--all");
+  localStorage.setItem("data", JSON.stringify(dataList));
 });
 
 // TASKBAR BUTTONS
