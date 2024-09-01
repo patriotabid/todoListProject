@@ -1,15 +1,20 @@
 "use strict";
 // Elements variable:
+const containerEl = document.querySelector(".container");
 const formEl = document.querySelector(".container--form");
 const inputEl = document.querySelector(".todo-input");
 const todoListEl = document.querySelector(".container--todo-list");
 const listCountEl = document.querySelector(".list-count");
-const taskbarBtnsEl = document.querySelectorAll(".taskbar--btn");
+const taskbarBtnElements = document.querySelectorAll(".taskbar--btn");
+const windowAlert = document.querySelector(".window--alert");
+const alertBtnsEl = document.querySelector(".alert__buttons");
 
 // VARIABLE: ............................................................................................................
-let todoItemId,
-  dataList = [];
-let message = "Please write something";
+let todoItemId, newDataListAftedDeleteItem, dataList;
+let message = {
+  emptyInput: "Please write something",
+  removeTodoItem: "Do you sure want to delete this task?",
+};
 
 // FUNCTIONS: ............................................................................................................
 
@@ -20,7 +25,7 @@ const displayListCount = (data) => (listCountEl.textContent = data.length);
 const addActivedClass = function (clsname) {
   if (!document.querySelector(`.${clsname}`)) return;
 
-  taskbarBtnsEl.forEach((taskbarBtnEl) =>
+  taskbarBtnElements.forEach((taskbarBtnEl) =>
     taskbarBtnEl.classList.remove("activited")
   );
 
@@ -63,7 +68,7 @@ addActivedClass("list-display--all");
 // MAIN JS: ...............................................................................................................
 formEl.addEventListener("submit", function (e) {
   e.preventDefault();
-  if (!checkInput(inputEl)) return alert(message);
+  if (!checkInput(inputEl)) return alert(message.emptyInput);
 
   // Created new id
   todoItemId = dataList.length ? dataList.length : 0;
@@ -88,7 +93,7 @@ todoListEl.addEventListener("click", function (e) {
   const todoItemEl = e.target.closest(".todo-item");
 
   // Find clicked todo item
-  if (todoItemEl) {
+  if (e.target.closest(".todo-item--title")) {
     const clickedTodoItem = dataList.find(
       (todo) => todo.id === Number(todoItemEl.id)
     );
@@ -97,7 +102,14 @@ todoListEl.addEventListener("click", function (e) {
 
   // Find removed todo item
   if (e.target.closest(".todo-item--delete")) {
-    dataList = dataList.filter((todo) => todo.id !== Number(todoItemEl.id));
+    // Display alert window
+    windowAlert.classList.remove("hidden");
+    containerEl.classList.add("background");
+
+    // Create new array for display todo list
+    newDataListAftedDeleteItem = dataList.filter(
+      (todo) => todo.id !== Number(todoItemEl.id)
+    );
   }
 
   // Update todo list
@@ -107,7 +119,7 @@ todoListEl.addEventListener("click", function (e) {
 });
 
 // TASKBAR BUTTONS
-taskbarBtnsEl.forEach(function (taskbarBtnEl) {
+taskbarBtnElements.forEach(function (taskbarBtnEl) {
   taskbarBtnEl.addEventListener("click", function (e) {
     let newList;
     let activeClass = e.target.classList.value.slice(17);
@@ -135,4 +147,22 @@ taskbarBtnsEl.forEach(function (taskbarBtnEl) {
     addActivedClass(activeClass);
     update(newList);
   });
+});
+
+// WINDOW ALERT
+windowAlert.addEventListener("click", function (e) {
+  // Hidden alert window
+  if (e.target.closest(".btn--cancel")) {
+    windowAlert.classList.add("hidden");
+    containerEl.classList.remove("background");
+  }
+
+  if (e.target.closest(".btn--ok")) {
+    windowAlert.classList.add("hidden");
+    containerEl.classList.remove("background");
+
+    // Update todo list after delete todo item
+    update(newDataListAftedDeleteItem);
+    localStorage.setItem("data", JSON.stringify(newDataListAftedDeleteItem));
+  }
 });
