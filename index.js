@@ -8,12 +8,15 @@ const listCountEl = document.querySelector(".list-count");
 const taskbarBtnElements = document.querySelectorAll(".taskbar--btn");
 const windowAlert = document.querySelector(".window--alert");
 const alertBtnsEl = document.querySelector(".alert__buttons");
+const alertMessageTextEl = document.querySelector(".alert__message--text");
 
 // VARIABLE: ............................................................................................................
-let todoItemId, newDataListAftedDeleteItem, dataList;
+let todoItemId, newDataListAftedDeleteTodo, dataList;
 let message = {
   emptyInput: "Please write something",
-  removeTodoItem: "Do you sure want to delete this task?",
+  deleteTodoItem: "Do you sure want to delete this task?",
+  deleteAllTodoList: "Do you sure want to delete all tasks?",
+  deleteCompletedTodoList: "Do you sure want to delete completed tasks?",
 };
 
 // FUNCTIONS: ............................................................................................................
@@ -32,7 +35,18 @@ const addActivedClass = function (clsname) {
   document.querySelector(`.${clsname}`).classList.add("activited");
 };
 
-const update = function (data) {
+// Display alert window
+const displayAlertWindow = function (display) {
+  if (display) {
+    windowAlert.classList.remove("hidden");
+    containerEl.classList.add("background");
+    return;
+  }
+  windowAlert.classList.add("hidden");
+  containerEl.classList.remove("background");
+};
+
+const update = function (data, activeClass) {
   todoListEl.textContent = "";
 
   data.forEach(function (todo) {
@@ -54,6 +68,9 @@ const update = function (data) {
 
   // Calculation todo item count
   displayListCount(data);
+
+  // Define actived taskbar display button
+  addActivedClass(activeClass || "list-display--all");
 };
 
 // GETTING STARTED with the SITE ..........................................................................................
@@ -62,8 +79,6 @@ inputEl.focus();
 dataList = JSON.parse(localStorage.getItem("data"));
 if (!dataList) dataList = [];
 update(dataList);
-
-addActivedClass("list-display--all");
 
 // MAIN JS: ...............................................................................................................
 formEl.addEventListener("submit", function (e) {
@@ -103,18 +118,19 @@ todoListEl.addEventListener("click", function (e) {
   // Find removed todo item
   if (e.target.closest(".todo-item--delete")) {
     // Display alert window
-    windowAlert.classList.remove("hidden");
-    containerEl.classList.add("background");
-
+    displayAlertWindow(true);
     // Create new array for display todo list
-    newDataListAftedDeleteItem = dataList.filter(
+    alertMessageTextEl.textContent = message.deleteTodoItem;
+
+    newDataListAftedDeleteTodo = dataList.filter(
       (todo) => todo.id !== Number(todoItemEl.id)
     );
+
+    return;
   }
 
   // Update todo list
   update(dataList);
-  addActivedClass("list-display--all");
   localStorage.setItem("data", JSON.stringify(dataList));
 });
 
@@ -132,37 +148,40 @@ taskbarBtnElements.forEach(function (taskbarBtnEl) {
       newList = dataList.filter((todo) => todo.clicked);
 
     if (e.target.closest(".list-delete--completed")) {
-      newList = dataList.filter((todo) => !todo.clicked);
-      dataList = newList;
-      window.location.reload();
-      localStorage.setItem("data", JSON.stringify(dataList));
+      // Display alert window
+      displayAlertWindow(true);
+      alertMessageTextEl.textContent = message.deleteCompletedTodoList;
+
+      // Create new data list after delete completed todo items
+      newDataListAftedDeleteTodo = dataList.filter((todo) => !todo.clicked);
+      return;
     }
 
     if (e.target.closest(".list-delete--all")) {
-      newList = dataList = [];
-      localStorage.removeItem("data");
-      window.location.reload();
+      // Display alert window
+      displayAlertWindow(true);
+      alertMessageTextEl.textContent = message.deleteAllTodoList;
+
+      // Create new data list after delete all todo list
+      newDataListAftedDeleteTodo = [];
+      return;
     }
 
-    addActivedClass(activeClass);
-    update(newList);
+    // Update
+    update(newList, activeClass);
   });
 });
 
 // WINDOW ALERT
 windowAlert.addEventListener("click", function (e) {
   // Hidden alert window
-  if (e.target.closest(".btn--cancel")) {
-    windowAlert.classList.add("hidden");
-    containerEl.classList.remove("background");
-  }
+  if (e.target.closest(".btn--cancel")) displayAlertWindow(false);
 
   if (e.target.closest(".btn--ok")) {
-    windowAlert.classList.add("hidden");
-    containerEl.classList.remove("background");
+    displayAlertWindow(false);
 
     // Update todo list after delete todo item
-    update(newDataListAftedDeleteItem);
-    localStorage.setItem("data", JSON.stringify(newDataListAftedDeleteItem));
+    update(newDataListAftedDeleteTodo);
+    localStorage.setItem("data", JSON.stringify(newDataListAftedDeleteTodo));
   }
 });
