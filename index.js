@@ -46,6 +46,29 @@ const displayAlertWindow = function (display) {
   containerEl.classList.remove("background");
 };
 
+// Create to edit new input for todo item
+const createToEditNewInputTodo = function (todoItemEl, clickedTodoItem) {
+  const inputElForEdit = `
+  <form class="form__input__todo-item--edit">
+    <input
+    type="text"
+      class="input__todo-item--edit"
+      value="${clickedTodoItem.title}"
+      placeholder="edit task..." />
+   </form>
+`;
+
+  todoItemEl.insertAdjacentHTML("afterend", inputElForEdit);
+
+  const formForEditEl = document.querySelector(".form__input__todo-item--edit");
+  const inputForEditEl = document.querySelector(".input__todo-item--edit");
+
+  return {
+    form: formForEditEl,
+    input: inputForEditEl,
+  };
+};
+
 const update = function (data, activeClass) {
   todoListEl.textContent = "";
 
@@ -59,8 +82,12 @@ const update = function (data, activeClass) {
       todo.title
     }</p>
       </div>
-    
-       <div class="todo-item--delete ${todo.clicked && "completedItem"}">X</div>
+      
+      <div class="todo-item__buttons ${todo.clicked && "completedItem"}">
+        <button class="btn todo-item__buttons--edit">edit</button> 
+        <div class="border-between--btns"></div>
+        <button class="btn todo-item__buttons--delete">X</button> 
+      </div>
     </li>
     `;
     todoListEl.insertAdjacentHTML("afterbegin", todoItemStr);
@@ -103,7 +130,7 @@ formEl.addEventListener("submit", function (e) {
   inputEl.value = "";
 });
 
-// TODO LIST COMPLETE ITEM
+// TODO LIST
 todoListEl.addEventListener("click", function (e) {
   const todoItemEl = e.target.closest(".todo-item");
 
@@ -113,10 +140,14 @@ todoListEl.addEventListener("click", function (e) {
       (todo) => todo.id === Number(todoItemEl.id)
     );
     clickedTodoItem.clicked = !clickedTodoItem.clicked;
+
+    // Update todo list
+    update(dataList);
+    localStorage.setItem("data", JSON.stringify(dataList));
   }
 
-  // Find removed todo item
-  if (e.target.closest(".todo-item--delete")) {
+  // Find to delete todo item
+  if (e.target.closest(".todo-item__buttons--delete")) {
     // Display alert window
     displayAlertWindow(true);
     // Create new array for display todo list
@@ -126,12 +157,29 @@ todoListEl.addEventListener("click", function (e) {
       (todo) => todo.id !== Number(todoItemEl.id)
     );
 
-    return;
+    // Update todo list
+    update(dataList);
+    localStorage.setItem("data", JSON.stringify(dataList));
   }
 
-  // Update todo list
-  update(dataList);
-  localStorage.setItem("data", JSON.stringify(dataList));
+  // Find to edit todo item
+  if (e.target.closest(".todo-item__buttons--edit")) {
+    const clickedTodoItem = dataList.find(
+      (todo) => todo.id === Number(todoItemEl.id)
+    );
+
+    // Create to edit new input for todo item
+    const elementsObj = createToEditNewInputTodo(todoItemEl, clickedTodoItem);
+
+    elementsObj.form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      clickedTodoItem.title = elementsObj.input.value;
+      // Update todo list
+      update(dataList);
+      localStorage.setItem("data", JSON.stringify(dataList));
+    });
+  }
 });
 
 // TASKBAR BUTTONS

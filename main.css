@@ -23,6 +23,7 @@ body {
 .container--taskbar,
 .todo-item,
 .window--alert,
+.input__todo-item--edit,
 .todo-input {
   border: 1px solid rgba(0, 0, 0, 0.518);
   background-color: #fff;
@@ -71,6 +72,7 @@ body {
   border: none;
 }
 
+.input__todo-item--edit,
 .todo-input {
   width: 100%;
   padding: 12px;
@@ -110,15 +112,18 @@ body {
   gap: 10px;
 }
 
-.todo-item--delete {
-  display: none;
-  user-select: none;
-  cursor: pointer;
-  font-size: 18px;
+.todo-item__buttons {
+  display: none; /* Hidden */
 }
 
-.todo-item:hover .todo-item--delete {
-  display: block;
+.todo-item:hover .todo-item__buttons {
+  display: flex;
+}
+
+.todo-item__buttons .btn {
+  user-select: none;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .title--checkbox {
@@ -229,4 +234,13 @@ body {
   color: #3a7cfd;
   text-decoration: underline #3a7cfd;
   text-underline-offset: 2px;
+}
+
+.input__todo-item--edit {
+  margin-bottom: 20px;
+  height: 60px;
+}
+
+.border-between--btns {
+  border: 1px solid #9495a5;
 }
