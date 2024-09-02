@@ -24,6 +24,7 @@ body {
 .todo-item,
 .window--alert,
 .input__todo-item--edit,
+.task--input,
 .todo-input {
   border: 1px solid rgba(0, 0, 0, 0.518);
   background-color: #fff;
@@ -73,12 +74,15 @@ body {
 }
 
 .input__todo-item--edit,
+.task--input,
 .todo-input {
   width: 100%;
   padding: 12px;
   padding-left: 35px;
   font-size: 1rem;
 }
+.input__todo-item--edit,
+.task--input,
 .todo-input:focus {
   outline: none;
 }
@@ -112,6 +116,11 @@ body {
   gap: 10px;
 }
 
+.task--input {
+  border: none;
+  padding: 0;
+}
+
 .todo-item__buttons {
   display: none; /* Hidden */
 }
@@ -138,6 +147,7 @@ body {
 .title--text {
   width: 100%;
   overflow-wrap: break-word;
+  cursor: pointer;
 }
 
 .container--taskbar {
@@ -243,4 +253,8 @@ body {
 
 .border-between--btns {
   border: 1px solid #9495a5;
+}
+
+.todo-item--editing {
+  color: #3a7cfd;
 }

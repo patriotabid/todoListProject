@@ -46,28 +46,11 @@ const displayAlertWindow = function (display) {
   containerEl.classList.remove("background");
 };
 
-// Create to edit new input for todo item
-const createToEditNewInputTodo = function (todoItemEl, clickedTodoItem) {
-  const inputElForEdit = `
-  <form class="form__input__todo-item--edit">
-    <input
-    type="text"
-      class="input__todo-item--edit"
-      value="${clickedTodoItem.title}"
-      placeholder="edit task..." />
-   </form>
-`;
-
-  todoItemEl.insertAdjacentHTML("afterend", inputElForEdit);
-
-  const formForEditEl = document.querySelector(".form__input__todo-item--edit");
-  const inputForEditEl = document.querySelector(".input__todo-item--edit");
-
-  return {
-    form: formForEditEl,
-    input: inputForEditEl,
-  };
-};
+// Add edit class Elements
+const addEditingClass = (el, add) =>
+  add
+    ? el.classList.add("todo-item--editing")
+    : el.classList.remove("todo-item--editing");
 
 const update = function (data, activeClass) {
   todoListEl.textContent = "";
@@ -78,13 +61,14 @@ const update = function (data, activeClass) {
       <div class="todo-item--title">
          <img class="title--checkbox ${todo.clicked && "display--checkbox"}" 
             src="img/icons8-checkmark-32.png"/>
-         <p class="title--text ${todo.clicked && "clickedItem"}">${
-      todo.title
-    }</p>
+         <input id="todo--input${todo.id}" class="title--text task--input ${
+      todo.clicked && "clickedItem"
+    }" value="${todo.title}" readonly>
       </div>
       
       <div class="todo-item__buttons ${todo.clicked && "completedItem"}">
-        <button class="btn todo-item__buttons--edit">edit</button> 
+        <button class="btn todo-item__buttons--edit" 
+          id="todo--edit${todo.id}">edit</button> 
         <div class="border-between--btns"></div>
         <button class="btn todo-item__buttons--delete">X</button> 
       </div>
@@ -136,11 +120,14 @@ todoListEl.addEventListener("click", function (e) {
 
   // Find clicked todo item
   if (e.target.closest(".todo-item--title")) {
+    // If item is editing don't complete it
+    if (todoItemEl.classList.contains("todo-item--editing")) return;
+
     const clickedTodoItem = dataList.find(
       (todo) => todo.id === Number(todoItemEl.id)
     );
-    clickedTodoItem.clicked = !clickedTodoItem.clicked;
 
+    clickedTodoItem.clicked = !clickedTodoItem.clicked;
     // Update todo list
     update(dataList);
     localStorage.setItem("data", JSON.stringify(dataList));
@@ -168,17 +155,39 @@ todoListEl.addEventListener("click", function (e) {
       (todo) => todo.id === Number(todoItemEl.id)
     );
 
-    // Create to edit new input for todo item
-    const elementsObj = createToEditNewInputTodo(todoItemEl, clickedTodoItem);
+    // Find to edit todo item
+    const clickedInputEl = document.querySelector(
+      `#todo--input${clickedTodoItem.id}`
+    );
+    const editBtn = document.querySelector(`#todo--edit${clickedTodoItem.id}`);
 
-    elementsObj.form.addEventListener("submit", function (e) {
-      e.preventDefault();
+    // Delete to edit readonly attr
+    if (clickedInputEl.attributes.readonly) {
+      addEditingClass(todoItemEl, true);
+      addEditingClass(clickedInputEl, true);
 
-      clickedTodoItem.title = elementsObj.input.value;
+      clickedInputEl.removeAttribute("readonly");
+      editBtn.textContent = "save";
+      clickedInputEl.focus();
+
+      return;
+    }
+
+    // Add to save readonly attr
+    if (!clickedInputEl.attributes.readonly) {
+      clickedTodoItem.title = clickedInputEl.value;
+
+      addEditingClass(todoItemEl, false);
+      addEditingClass(clickedInputEl, false);
+
+      clickedInputEl.setAttribute("readonly", true);
+      editBtn.textContent = "edit";
+
       // Update todo list
       update(dataList);
       localStorage.setItem("data", JSON.stringify(dataList));
-    });
+      return;
+    }
   }
 });
 
@@ -229,6 +238,7 @@ windowAlert.addEventListener("click", function (e) {
     displayAlertWindow(false);
 
     // Update todo list after delete todo item
+    dataList = newDataListAftedDeleteTodo;
     update(newDataListAftedDeleteTodo);
     localStorage.setItem("data", JSON.stringify(newDataListAftedDeleteTodo));
   }
