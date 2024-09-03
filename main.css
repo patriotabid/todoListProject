@@ -20,9 +20,9 @@ body {
 }
 
 .btn,
-.container--taskbar,
+.container__taskbar,
 .todo-item,
-.window--alert,
+.window__alert,
 .input__todo-item--edit,
 .task--input,
 .todo-input {
@@ -59,7 +59,7 @@ body {
   z-index: 1;
 }
 
-.container--logo {
+.container__logo {
   font-weight: 700;
   font-size: 3rem;
   line-height: 40px;
@@ -69,7 +69,7 @@ body {
   cursor: pointer;
 }
 
-.container--form {
+.container__form {
   border: none;
 }
 
@@ -87,7 +87,7 @@ body {
   outline: none;
 }
 
-.container--todo-list {
+.container__todo-list {
   list-style: none;
 }
 
@@ -150,7 +150,7 @@ body {
   cursor: pointer;
 }
 
-.container--taskbar {
+.container__taskbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -158,27 +158,27 @@ body {
   user-select: none;
 }
 
-.taskbar--list-count {
+.taskbar__list-count {
   font-family: inherit;
   color: #9495a5;
   font-size: 0.8rem;
 }
 
-.taskbar--list-delete {
+.taskbar__delete-buttons {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.list-delete--all:active,
-.list-delete--completed:active {
+.delete-btn__all:active,
+.delete-btn__completed:active {
   color: #3a7cfd;
 }
 
-.list-delete--all {
+.delete-btn__all {
   border: 1px solid red;
 }
-.list-delete--completed {
+.delete-btn__completed {
   border: 1px solid rgb(0, 158, 0);
 }
 
@@ -190,7 +190,7 @@ body {
   color: #9495a5;
 }
 
-.window--alert {
+.window__alert {
   position: absolute;
   height: 120px;
   padding: 20px;
@@ -212,10 +212,10 @@ body {
   align-items: center;
 }
 
-.alert__message--icon {
+.alert__message-icon {
   height: 25px;
 }
-.alert__message--text {
+.alert__message-text {
   margin-left: -1.5px;
 }
 

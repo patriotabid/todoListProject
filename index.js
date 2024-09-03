@@ -1,14 +1,14 @@
 "use strict";
 // Elements variable:
 const containerEl = document.querySelector(".container");
-const formEl = document.querySelector(".container--form");
+const formEl = document.querySelector(".container__form");
 const inputEl = document.querySelector(".todo-input");
-const todoListEl = document.querySelector(".container--todo-list");
-const TaskbarListCountEl = document.querySelector(".taskbar--list-count");
-const taskbarBtnElements = document.querySelectorAll(".taskbar--btn");
-const windowAlert = document.querySelector(".window--alert");
+const todoListEl = document.querySelector(".container__todo-list");
+const TaskbarListCountEl = document.querySelector(".taskbar__list-count");
+const taskbarBtnElements = document.querySelectorAll(".taskbar__btn");
+const windowAlert = document.querySelector(".window__alert");
 const alertBtnsEl = document.querySelector(".alert__buttons");
-const alertMessageTextEl = document.querySelector(".alert__message--text");
+const alertMessageTextEl = document.querySelector(".alert__message-text");
 
 // VARIABLE: ............................................................................................................
 let todoItemId, newDataListAftedDeleteTodo, dataList;
@@ -84,7 +84,7 @@ const update = function (data, activeClass, noSetItem) {
   displayListCount(data);
 
   // Define actived taskbar display button
-  addActivedClass(activeClass || "list-display--all");
+  addActivedClass(activeClass || "display-list__all");
 
   // Set data local Storage
   if (!noSetItem) localStorage.setItem("data", JSON.stringify(data));
@@ -201,14 +201,14 @@ taskbarBtnElements.forEach(function (taskbarBtnEl) {
     let newList;
     let activeClass = e.target.classList.value.slice(17);
 
-    if (e.target.closest(".list-display--all")) newList = dataList;
-    if (e.target.closest(".list-display--active"))
+    if (e.target.closest(".display-list__all")) newList = dataList;
+    if (e.target.closest(".display-list__active"))
       newList = dataList.filter((todo) => !todo.clicked);
 
-    if (e.target.closest(".list-display--completed"))
+    if (e.target.closest(".display-list__completed"))
       newList = dataList.filter((todo) => todo.clicked);
 
-    if (e.target.closest(".list-delete--completed")) {
+    if (e.target.closest(".delete-btn__completed")) {
       // Display alert window
       displayAlertWindow(true);
       alertMessageTextEl.textContent = message.deleteCompletedTodoList;
@@ -218,7 +218,7 @@ taskbarBtnElements.forEach(function (taskbarBtnEl) {
       return;
     }
 
-    if (e.target.closest(".list-delete--all")) {
+    if (e.target.closest(".delete-btn__all")) {
       // Display alert window
       displayAlertWindow(true);
       alertMessageTextEl.textContent = message.deleteAllTodoList;
