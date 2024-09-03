@@ -11,7 +11,7 @@ const alertBtnsEl = document.querySelector(".alert__buttons");
 const alertMessageTextEl = document.querySelector(".alert__message-text");
 
 // VARIABLE: ............................................................................................................
-let todoItemId, newDataListAftedDeleteTodo, dataList;
+let newDataListAftedDeleteTodo, dataList;
 let message = {
   emptyInput: "Please write something",
   deleteTodoItem: "Do you sure want to delete this task?",
@@ -55,6 +55,18 @@ const addEditingClass = (el, add) =>
     ? el.classList.add("todo-item--editing")
     : el.classList.remove("todo-item--editing");
 
+// Get todo item id
+const getTodoItemId = function () {
+  let todoItemId = Number(JSON.parse(localStorage.getItem("todoItemId")));
+
+  if (!todoItemId) todoItemId = 1;
+  else if (todoItemId) todoItemId += 1;
+
+  localStorage.setItem("todoItemId", JSON.stringify(todoItemId));
+  return todoItemId;
+};
+
+// UPDATE Function
 const update = function (data, activeClass, noSetItem) {
   todoListEl.textContent = "";
 
@@ -110,11 +122,15 @@ formEl.addEventListener("submit", function (e) {
   if (!checkInput(inputEl)) return alert(message.emptyInput);
 
   // Created new id
-  todoItemId = dataList.length ? dataList.length : 0;
-  todoItemId += 1;
+  const todoItemId = getTodoItemId();
+  console.log(todoItemId);
 
   //   Push data new todo item
-  const newTodoItem = { title: inputEl.value, clicked: false, id: todoItemId };
+  const newTodoItem = {
+    title: inputEl.value,
+    clicked: false,
+    id: todoItemId,
+  };
   dataList.push(newTodoItem);
 
   //   Update
