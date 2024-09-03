@@ -4,7 +4,7 @@ const containerEl = document.querySelector(".container");
 const formEl = document.querySelector(".container--form");
 const inputEl = document.querySelector(".todo-input");
 const todoListEl = document.querySelector(".container--todo-list");
-const listCountEl = document.querySelector(".list-count");
+const TaskbarListCountEl = document.querySelector(".taskbar--list-count");
 const taskbarBtnElements = document.querySelectorAll(".taskbar--btn");
 const windowAlert = document.querySelector(".window--alert");
 const alertBtnsEl = document.querySelector(".alert__buttons");
@@ -23,7 +23,10 @@ let message = {
 
 const checkInput = (input) => (input.value.trim() === "" ? false : true);
 
-const displayListCount = (data) => (listCountEl.textContent = data.length);
+const displayListCount = (data) =>
+  (TaskbarListCountEl.textContent = `${data.length} ${
+    data.length <= 1 ? "item left" : "items left"
+  }`);
 
 const addActivedClass = function (clsname) {
   if (!document.querySelector(`.${clsname}`)) return;
@@ -52,7 +55,7 @@ const addEditingClass = (el, add) =>
     ? el.classList.add("todo-item--editing")
     : el.classList.remove("todo-item--editing");
 
-const update = function (data, activeClass) {
+const update = function (data, activeClass, noSetItem) {
   todoListEl.textContent = "";
 
   data.forEach(function (todo) {
@@ -82,14 +85,24 @@ const update = function (data, activeClass) {
 
   // Define actived taskbar display button
   addActivedClass(activeClass || "list-display--all");
+
+  // Set data local Storage
+  if (!noSetItem) localStorage.setItem("data", JSON.stringify(data));
+
+  //   Init function
+  inputEl.value = "";
+  inputEl.focus();
 };
 
 // GETTING STARTED with the SITE ..........................................................................................
-inputEl.focus();
 
-dataList = JSON.parse(localStorage.getItem("data"));
-if (!dataList) dataList = [];
-update(dataList);
+const gettingStartedCallFunc = function () {
+  dataList = JSON.parse(localStorage.getItem("data"));
+  if (!dataList) dataList = [];
+
+  update(dataList);
+};
+gettingStartedCallFunc();
 
 // MAIN JS: ...............................................................................................................
 formEl.addEventListener("submit", function (e) {
@@ -106,12 +119,6 @@ formEl.addEventListener("submit", function (e) {
 
   //   Update
   update(dataList);
-
-  //   Local storage
-  localStorage.setItem("data", JSON.stringify(dataList));
-
-  //   Init function
-  inputEl.value = "";
 });
 
 // TODO LIST
@@ -126,11 +133,10 @@ todoListEl.addEventListener("click", function (e) {
     const clickedTodoItem = dataList.find(
       (todo) => todo.id === Number(todoItemEl.id)
     );
-
     clickedTodoItem.clicked = !clickedTodoItem.clicked;
+
     // Update todo list
     update(dataList);
-    localStorage.setItem("data", JSON.stringify(dataList));
   }
 
   // Find to delete todo item
@@ -146,7 +152,6 @@ todoListEl.addEventListener("click", function (e) {
 
     // Update todo list
     update(dataList);
-    localStorage.setItem("data", JSON.stringify(dataList));
   }
 
   // Find to edit todo item
@@ -185,7 +190,6 @@ todoListEl.addEventListener("click", function (e) {
 
       // Update todo list
       update(dataList);
-      localStorage.setItem("data", JSON.stringify(dataList));
       return;
     }
   }
@@ -225,7 +229,7 @@ taskbarBtnElements.forEach(function (taskbarBtnEl) {
     }
 
     // Update
-    update(newList, activeClass);
+    update(newList, activeClass, true);
   });
 });
 
@@ -240,6 +244,5 @@ windowAlert.addEventListener("click", function (e) {
     // Update todo list after delete todo item
     dataList = newDataListAftedDeleteTodo;
     update(newDataListAftedDeleteTodo);
-    localStorage.setItem("data", JSON.stringify(newDataListAftedDeleteTodo));
   }
 });
