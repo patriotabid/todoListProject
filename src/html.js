@@ -2,6 +2,7 @@
 export const containerEl = document.querySelector(".container");
 export const formEl = document.querySelector(".container__form");
 export const inputEl = document.querySelector(".todo-input");
+export const btnSearchTodoItem = document.querySelector(".btn__search-todo");
 export const todoListEl = document.querySelector(".container__todo-list");
 export const TaskbarListCountEl = document.querySelector(
   ".taskbar__list-count"

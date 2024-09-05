@@ -8,10 +8,10 @@ let message = {
   deleteTodoItem: "Do you sure want to delete this task?",
   deleteAllTodoList: "Do you sure want to delete all tasks?",
   deleteCompletedTodoList: "Do you sure want to delete completed tasks?",
+  noneSearchedTodo: "The task you are looking for is not available",
 };
 
 // GETTING STARTED with the SITE
-
 dataList = Functions.gettingStartedCallFunc(dataList);
 
 // MAIN JS: ...............................................................................................................
@@ -34,6 +34,27 @@ HTMLel.formEl.addEventListener("submit", function (e) {
   update(dataList);
 });
 
+// .........................................................................SEARCH TODO LIST
+HTMLel.btnSearchTodoItem.addEventListener("click", function () {
+  if (!Functions.checkInput(HTMLel.inputEl)) return alert(message.emptyInput);
+
+  // Find the searched todo element
+  const searchedTodoItem = HTMLel.inputEl.value;
+
+  const findedTodoItem = dataList.find(
+    (todo) => todo.title === searchedTodoItem
+  );
+
+  // if this item is not available
+  if (!findedTodoItem) return alert(message.noneSearchedTodo);
+
+  // Show searched todo item
+  Functions.showSearchedTodo(findedTodoItem);
+
+  // Init input value
+  Functions.initInput();
+});
+
 // .........................................................................TODO LIST CONTAINER
 HTMLel.todoListEl.addEventListener("click", function (e) {
   const todoItemEl = e.target.closest(".todo-item");
@@ -44,7 +65,7 @@ HTMLel.todoListEl.addEventListener("click", function (e) {
     if (todoItemEl.classList.contains("todo-item--editing")) return;
 
     const clickedTodoItem = dataList.find(
-      (todo) => todo.id === Number(todoItemEl.id)
+      (todo) => `todo-item${todo.id}` === todoItemEl.id
     );
     clickedTodoItem.clicked = !clickedTodoItem.clicked;
 
@@ -60,7 +81,7 @@ HTMLel.todoListEl.addEventListener("click", function (e) {
     HTMLel.alertMessageTextEl.textContent = message.deleteTodoItem;
 
     newDataListAftedDeleteTodo = dataList.filter(
-      (todo) => todo.id !== Number(todoItemEl.id)
+      (todo) => `todo-item${todo.id}` !== todoItemEl.id
     );
 
     // Update todo list
@@ -70,8 +91,9 @@ HTMLel.todoListEl.addEventListener("click", function (e) {
   // Find to edit todo item
   if (e.target.closest(".todo-item__buttons--edit")) {
     const clickedTodoItem = dataList.find(
-      (todo) => todo.id === Number(todoItemEl.id)
+      (todo) => `todo-item${todo.id}` === todoItemEl.id
     );
+    console.log(clickedTodoItem);
 
     // Find to edit todo item
     const clickedInputEl = document.querySelector(

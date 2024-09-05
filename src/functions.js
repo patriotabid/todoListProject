@@ -47,13 +47,30 @@ export const getTodoItemId = function () {
   return todoItemId;
 };
 
+//   Init function
+export const initInput = () => {
+  htmlEl.inputEl.value = "";
+  htmlEl.inputEl.focus();
+};
+
+// Show searched todo item
+export const showSearchedTodo = function (findedTodoItem) {
+  const findedTodoEl = document.querySelector(`#todo-item${findedTodoItem.id}`);
+  findedTodoEl.scrollIntoView(true);
+
+  findedTodoEl.classList.add("green-border");
+  setTimeout(() => {
+    findedTodoEl.classList.remove("green-border");
+  }, 1000);
+};
+
 // UPDATE Function
 const update = function (data, activeClass, noSetItem) {
   htmlEl.todoListEl.textContent = "";
 
   data.forEach(function (todo) {
     const todoItemStr = `
-    <li class="todo-item" id="${todo.id}">
+    <li class="todo-item" id="todo-item${todo.id}">
       <div class="todo-item--title">
          <img class="title--checkbox ${todo.clicked && "display--checkbox"}" 
             src="img/icons8-checkmark-32.png"/>
@@ -83,8 +100,7 @@ const update = function (data, activeClass, noSetItem) {
   if (!noSetItem) localStorage.setItem("data", JSON.stringify(data));
 
   //   Init function
-  htmlEl.inputEl.value = "";
-  htmlEl.inputEl.focus();
+  initInput();
 };
 
 export const gettingStartedCallFunc = function (data) {

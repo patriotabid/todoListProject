@@ -69,8 +69,17 @@ body {
   cursor: pointer;
 }
 
+.container__header {
+  display: flex;
+}
+
 .container__form {
   border: none;
+  width: 100%;
+}
+
+.btn__search-todo {
+  /* border-radius: 10px; */
 }
 
 .input__todo-item--edit,
@@ -256,4 +265,9 @@ body {
 
 .todo-item--editing {
   color: #3a7cfd;
+}
+
+.green-border {
+  box-shadow: inset 0px 0px 0px 5px greenyellow;
+  transform: translate(0, -2px);
 }
