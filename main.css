@@ -5,10 +5,11 @@
 }
 
 body {
+  padding-top: 125px;
   display: flex;
-  flex-direction: column;
+  gap: 50px;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   background-color: #f2f2f2;
   font-family: "Josefin Sans";
 
@@ -19,6 +20,7 @@ body {
   z-index: 0;
 }
 
+.searched-field__list li,
 .btn,
 .container__taskbar,
 .todo-item,
@@ -50,7 +52,6 @@ body {
 }
 
 .container {
-  margin-top: 125px;
   width: 500px;
   display: flex;
   justify-content: center;
@@ -78,10 +79,6 @@ body {
   width: 100%;
 }
 
-.btn__search-todo {
-  /* border-radius: 10px; */
-}
-
 .input__todo-item--edit,
 .task--input,
 .todo-input {
@@ -98,12 +95,16 @@ body {
 
 .container__todo-list {
   list-style: none;
+  word-break: break-all;
 }
 
+.searched-field__list li,
 .todo-item {
   margin-bottom: 10px;
   width: 100%;
   transition: transform 0.3s ease-out;
+  color: black;
+  word-break: break-all;
 
   display: flex;
   justify-content: space-between;
@@ -154,9 +155,8 @@ body {
 }
 
 .title--text {
-  width: 100%;
-  overflow-wrap: break-word;
   cursor: pointer;
+  color: inherit;
 }
 
 .container__taskbar {
@@ -197,6 +197,26 @@ body {
 }
 .completedItem {
   color: #9495a5;
+}
+
+.searched-field {
+  padding-top: 125px;
+  max-width: 300px;
+  max-width: 500px;
+
+  word-break: break-all;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.searched-field__delete-btn {
+  width: 80px;
+}
+
+.searched-field__list li {
+  width: 100%;
 }
 
 .window__alert {

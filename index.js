@@ -41,15 +41,15 @@ HTMLel.btnSearchTodoItem.addEventListener("click", function () {
   // Find the searched todo element
   const searchedTodoItem = HTMLel.inputEl.value;
 
-  const findedTodoItem = dataList.find(
-    (todo) => todo.title === searchedTodoItem
+  const findedTodoItem = dataList.filter((todo) =>
+    todo.title.startsWith(searchedTodoItem)
   );
 
   // if this item is not available
   if (!findedTodoItem) return alert(message.noneSearchedTodo);
 
   // Show searched todo item
-  Functions.showSearchedTodo(findedTodoItem);
+  Functions.addSearchedField(findedTodoItem);
 
   // Init input value
   Functions.initInput();
@@ -93,7 +93,6 @@ HTMLel.todoListEl.addEventListener("click", function (e) {
     const clickedTodoItem = dataList.find(
       (todo) => `todo-item${todo.id}` === todoItemEl.id
     );
-    console.log(clickedTodoItem);
 
     // Find to edit todo item
     const clickedInputEl = document.querySelector(
@@ -179,5 +178,23 @@ HTMLel.windowAlert.addEventListener("click", function (e) {
     // Update todo list after delete todo item
     dataList = newDataListAftedDeleteTodo;
     update(newDataListAftedDeleteTodo);
+  }
+});
+
+// ...................................................................................SEARCH FIELD
+HTMLel.searchedField.addEventListener("click", function (e) {
+  // Hidden search field
+  if (e.target.closest(".searched-field__delete-btn")) {
+    HTMLel.searchedField.classList.add("hidden");
+    HTMLel.searchedTodoListEl.textContent = "";
+  }
+
+  // Find searched todo item
+  if (e.target.closest(".searched__todo-item")) {
+    const clickedItemEl = e.target.closest(".searched__todo-item").textContent;
+    const findedItem = dataList.find((todo) => todo.title === clickedItemEl);
+
+    // display finded item
+    Functions.displaySearchedTodo(findedItem);
   }
 });

@@ -54,14 +54,36 @@ export const initInput = () => {
 };
 
 // Show searched todo item
-export const showSearchedTodo = function (findedTodoItem) {
+export const displaySearchedTodo = function (findedTodoItem) {
   const findedTodoEl = document.querySelector(`#todo-item${findedTodoItem.id}`);
-  findedTodoEl.scrollIntoView(true);
 
+  // display item
   findedTodoEl.classList.add("green-border");
+  // cancel item
   setTimeout(() => {
     findedTodoEl.classList.remove("green-border");
   }, 1000);
+
+  // scroll searched todo item
+  findedTodoEl.scrollIntoView({
+    behavior: "smooth",
+  });
+};
+
+// Add search field todo items
+export const addSearchedField = function (findedTodoItems) {
+  findedTodoItems.forEach((findedTodoItem) => {
+    const findedTodoEl = document.querySelector(
+      `#todo-item${findedTodoItem.id}`
+    );
+
+    const str = `
+    <li class="searched__todo-item">${findedTodoItem.title}</li>
+    `;
+
+    htmlEl.searchedTodoListEl.insertAdjacentHTML("beforeend", str);
+    htmlEl.searchedField.classList.remove("hidden");
+  });
 };
 
 // UPDATE Function

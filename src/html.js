@@ -1,5 +1,9 @@
 // Elements variable:
 export const containerEl = document.querySelector(".container");
+export const searchedField = document.querySelector(".searched-field");
+export const searchedTodoListEl = document.querySelector(
+  ".searched-field__list"
+);
 export const formEl = document.querySelector(".container__form");
 export const inputEl = document.querySelector(".todo-input");
 export const btnSearchTodoItem = document.querySelector(".btn__search-todo");
