@@ -24,6 +24,9 @@ export const displayAlertWindow = function (display) {
   if (display) {
     htmlEl.windowAlert.classList.remove("hidden");
     htmlEl.containerEl.classList.add("background");
+    htmlEl.windowAlert.scrollIntoView({
+      behavior: "smooth",
+    });
     return;
   }
   htmlEl.windowAlert.classList.add("hidden");
@@ -53,7 +56,7 @@ export const initInput = () => {
   htmlEl.inputEl.focus();
 };
 
-// Show searched todo item
+// Display searched todo item
 export const displaySearchedTodo = function (findedTodoItem) {
   const findedTodoEl = document.querySelector(`#todo-item${findedTodoItem.id}`);
 
@@ -73,12 +76,9 @@ export const displaySearchedTodo = function (findedTodoItem) {
 // Add search field todo items
 export const addSearchedField = function (findedTodoItems) {
   findedTodoItems.forEach((findedTodoItem) => {
-    const findedTodoEl = document.querySelector(
-      `#todo-item${findedTodoItem.id}`
-    );
-
     const str = `
-    <li class="searched__todo-item">${findedTodoItem.title}</li>
+    <li class="searched__todo-item" data-id="${findedTodoItem.id}"
+    >${findedTodoItem.title}</li>
     `;
 
     htmlEl.searchedTodoListEl.insertAdjacentHTML("beforeend", str);
@@ -94,11 +94,15 @@ const update = function (data, activeClass, noSetItem) {
     const todoItemStr = `
     <li class="todo-item" id="todo-item${todo.id}">
       <div class="todo-item--title">
-         <img class="title--checkbox ${todo.clicked && "display--checkbox"}" 
-            src="img/icons8-checkmark-32.png"/>
-         <input id="todo--input${todo.id}" class="title--text task--input ${
-      todo.clicked && "clickedItem"
-    }" value="${todo.title}" readonly>
+         <img class="title--checkbox" 
+            src="${
+              todo.clicked ? "img/icons8-checkmark-32.png" : "img/complete.png"
+            }"/>
+            
+         <textarea id="todo--input${todo.id}" 
+            class="todo-item__area ${todo.clicked && "clickedItem"}
+            ${todo.title.length > 34 && "add--resize"}" readonly
+            >${todo.title}</textarea>
       </div>
       
       <div class="todo-item__buttons ${todo.clicked && "completedItem"}">

@@ -25,8 +25,7 @@ body {
 .container__taskbar,
 .todo-item,
 .window__alert,
-.input__todo-item--edit,
-.task--input,
+.todo-item__area,
 .todo-input {
   border: 1px solid rgba(0, 0, 0, 0.518);
   background-color: #fff;
@@ -53,6 +52,7 @@ body {
 
 .container {
   width: 500px;
+
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -72,6 +72,7 @@ body {
 
 .container__header {
   display: flex;
+  gap: 10px;
 }
 
 .container__form {
@@ -79,23 +80,20 @@ body {
   width: 100%;
 }
 
-.input__todo-item--edit,
-.task--input,
 .todo-input {
   width: 100%;
   padding: 12px;
   padding-left: 35px;
   font-size: 1rem;
 }
-.input__todo-item--edit,
-.task--input,
+
+.todo-item__area,
 .todo-input:focus {
   outline: none;
 }
 
 .container__todo-list {
   list-style: none;
-  word-break: break-all;
 }
 
 .searched-field__list li,
@@ -104,7 +102,6 @@ body {
   width: 100%;
   transition: transform 0.3s ease-out;
   color: black;
-  word-break: break-all;
 
   display: flex;
   justify-content: space-between;
@@ -118,7 +115,7 @@ body {
 }
 
 .todo-item--title {
-  width: 90%;
+  width: 85%;
   cursor: pointer;
 
   display: flex;
@@ -126,13 +123,29 @@ body {
   gap: 10px;
 }
 
-.task--input {
-  border: none;
+.title--checkbox {
+  height: 20px;
+  user-select: none;
+}
+
+.todo-item__area {
   padding: 0;
+  width: 100%;
+  font-size: inherit;
+  font-family: inherit;
+
+  border: none;
+  overflow: hidden;
+  padding-top: 2px;
+  height: 20px;
+  resize: none;
+
+  cursor: pointer;
+  color: inherit;
 }
 
 .todo-item__buttons {
-  display: none; /* Hidden */
+  display: none;
 }
 
 .todo-item:hover .todo-item__buttons {
@@ -143,20 +156,6 @@ body {
   user-select: none;
   cursor: pointer;
   font-size: 14px;
-}
-
-.title--checkbox {
-  height: 20px;
-  opacity: 0;
-}
-
-.display--checkbox {
-  opacity: 100;
-}
-
-.title--text {
-  cursor: pointer;
-  color: inherit;
 }
 
 .container__taskbar {
@@ -201,14 +200,14 @@ body {
 
 .searched-field {
   padding-top: 125px;
-  max-width: 300px;
+  min-width: 300px;
   max-width: 500px;
-
   word-break: break-all;
 
   display: flex;
   flex-direction: column;
   gap: 20px;
+  cursor: pointer;
 }
 
 .searched-field__delete-btn {
@@ -221,6 +220,10 @@ body {
 
 .window__alert {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   height: 120px;
   padding: 20px;
   padding-left: 10px;
@@ -274,11 +277,6 @@ body {
   text-underline-offset: 2px;
 }
 
-.input__todo-item--edit {
-  margin-bottom: 20px;
-  height: 60px;
-}
-
 .border-between--btns {
   border: 1px solid #9495a5;
 }
@@ -290,4 +288,9 @@ body {
 .green-border {
   box-shadow: inset 0px 0px 0px 5px greenyellow;
   transform: translate(0, -2px);
+}
+
+.add--resize {
+  height: min-content;
+  resize: vertical;
 }

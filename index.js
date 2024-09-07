@@ -14,7 +14,7 @@ let message = {
 // GETTING STARTED with the SITE
 dataList = Functions.gettingStartedCallFunc(dataList);
 
-// MAIN JS: ...............................................................................................................
+// MAIN JS: ..................................................................INPUT TODO
 HTMLel.formEl.addEventListener("submit", function (e) {
   e.preventDefault();
   if (!Functions.checkInput(HTMLel.inputEl)) return alert(message.emptyInput);
@@ -46,7 +46,10 @@ HTMLel.btnSearchTodoItem.addEventListener("click", function () {
   );
 
   // if this item is not available
-  if (!findedTodoItem) return alert(message.noneSearchedTodo);
+  if (!findedTodoItem || findedTodoItem.length == 0) {
+    Functions.initInput();
+    return alert(message.noneSearchedTodo);
+  }
 
   // Show searched todo item
   Functions.addSearchedField(findedTodoItem);
@@ -59,8 +62,8 @@ HTMLel.btnSearchTodoItem.addEventListener("click", function () {
 HTMLel.todoListEl.addEventListener("click", function (e) {
   const todoItemEl = e.target.closest(".todo-item");
 
-  // Find clicked todo item
-  if (e.target.closest(".todo-item--title")) {
+  // // Find clicked todo item
+  if (e.target.closest(".title--checkbox")) {
     // If item is editing don't complete it
     if (todoItemEl.classList.contains("todo-item--editing")) return;
 
@@ -187,13 +190,14 @@ HTMLel.searchedField.addEventListener("click", function (e) {
   if (e.target.closest(".searched-field__delete-btn")) {
     HTMLel.searchedField.classList.add("hidden");
     HTMLel.searchedTodoListEl.textContent = "";
+    Functions.initInput();
   }
 
   // Find searched todo item
   if (e.target.closest(".searched__todo-item")) {
-    const clickedItemEl = e.target.closest(".searched__todo-item").textContent;
-    const findedItem = dataList.find((todo) => todo.title === clickedItemEl);
+    const clickedItemEl = e.target.closest(".searched__todo-item").dataset;
 
+    const findedItem = dataList.find((todo) => todo.id === +clickedItemEl.id);
     // display finded item
     Functions.displaySearchedTodo(findedItem);
   }
